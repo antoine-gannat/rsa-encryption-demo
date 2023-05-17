@@ -1,4 +1,4 @@
-import { decrypt, encrypt, generateKeys } from "./crypto";
+import { decrypt, encrypt, generateKeyPair } from "./crypto";
 
 interface Key {
   publicKey: string;
@@ -16,8 +16,12 @@ export function createUser(name: string) {
   // listen for data from stdin
   process.stdin.on("data", (data) => {
     const message = data.toString().trim();
-    const type = message.split(":")[0];
-    const content = message.split(":")[1]?.trim();
+    const firstSeparator = message.indexOf(":");
+    if (firstSeparator === -1) {
+      return;
+    }
+    const type = message.substring(0, firstSeparator);
+    const content = message.substring(firstSeparator + 1);
 
     switch (type) {
       // if public key, store it
@@ -27,32 +31,29 @@ export function createUser(name: string) {
         };
         // user A will send a message
         if (name === "a") {
+          const message = "Hello";
           // encrypt a message using the other user's public key
-          console.log("MESSAGE:", encrypt("Hello", store.otherKey.publicKey));
+          console.log("LOG:Sending encrypted message", message);
+          console.log("MESSAGE:", encrypt(message, store.otherKey.publicKey));
+          process.exit(0);
         }
         break;
       case "MESSAGE":
         // user B will receive the message and decrypt it
-        console.info("DECRYPTED:", decrypt(content, store.ownKeys.privateKey));
+        console.info(
+          "LOG:Text decrypted to:",
+          decrypt(content, store.ownKeys.privateKey)
+        );
+        process.exit(0);
         break;
     }
   });
 
-  // read own keys
-  const keys = generateKeys();
+  // generate a key pair
+  const { n, e, d } = generateKeyPair();
   store.ownKeys = {
-    publicKey: keys.publicKey
-      .export({
-        type: "pkcs1",
-        format: "pem",
-      })
-      .toString(),
-    privateKey: keys.privateKey
-      .export({
-        type: "pkcs1",
-        format: "pem",
-      })
-      .toString(),
+    publicKey: JSON.stringify({ e, n }),
+    privateKey: JSON.stringify({ n, e, d }),
   };
 
   // send private key to other user
