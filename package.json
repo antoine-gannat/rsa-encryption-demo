@@ -1,14 +1,14 @@
 {
-  "name": "crypto-test",
+  "name": "rsa-encryption-demo",
   "version": "1.0.0",
-  "description": "",
+  "description": "Demo of RSA generation/encryption/decryption.",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
     "start": "node lib/index.js"
   },
-  "author": "",
+  "author": "Antoine Gannat",
   "license": "ISC",
   "dependencies": {
     "big-number": "^2.0.0",
