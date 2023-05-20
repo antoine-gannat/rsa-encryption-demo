@@ -5,6 +5,7 @@
 // @ts-ignore (big-number doesn't have types)
 import * as BigNumber from "big-number";
 import { primes } from "./primeNumbers";
+import { talk } from "./utils";
 
 interface Key {
   n: number;
@@ -56,11 +57,10 @@ export function generateKeyPair(): Key {
 
   const d = modularMultiplicativeInverse(e, phi) + phi;
 
-  console.log("LOG: Generating key pair using primes:", { p, q }, "Result:", {
-    n,
-    e,
-    d,
-  });
+  talk(
+    "LOG",
+    `Generating key pair using primes: p=${p}, q=${q}. Result: n=${n}, e=${e}, d=${d}`
+  );
 
   return {
     n,

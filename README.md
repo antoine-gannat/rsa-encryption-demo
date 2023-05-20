@@ -26,12 +26,12 @@ To do so, we have two users, A and B:
 
 ```
 $ yarn start "Hello world"
-USER_B: Generating key pair using primes: { p: 31, q: 47 } Result: { n: 1457, e: 17, d: 893 }
+USER_B: Generating key pair using primes: p=17, q=41. Result: n=697, e=17, d=113
 
-USER_A: Received public key {"e":17,"n":1457}
-USER_A: Sending encypted message: [410,1087,1015,1015,789,1334,316,789,86,1015,824]
+USER_A: Received public key {"e":17,"n":697}
+USER_A: Sending encypted message: [310,509,142,142,417,32,221,417,114,142,406]
 
-USER_B: Decrypting message: [410,1087,1015,1015,789,1334,316,789,86,1015,824] using private key: {"n":1457,"e":17,"d":893}
+USER_B: Decrypting message: [310,509,142,142,417,32,221,417,114,142,406] using private key: {"n":697,"e":17,"d":113}
 USER_B: Message decrypted to: "Hello world"
 ```
 
