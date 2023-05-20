@@ -1,39 +1,53 @@
+/**
+ * This file is used to make the two users talk to each other.
+ *
+ * It spawns two processes, one for each user, and redirects their STDOUT to the other user's STDIN.
+ */
+
 import { spawn } from "child_process";
 import * as path from "path";
 
-const processA = spawn("node", [path.join(__dirname, "userA")]);
+// spawn a process per "user"
+const processA = spawn("node", [
+  path.join(__dirname, "userA"),
+  process.argv[2] || "",
+]);
 const processB = spawn("node", [path.join(__dirname, "userB")]);
 
-// make processes talk to each other
+// intercept logs and print them to the console
+function interceptLogs(message: string, user: "A" | "B"): boolean {
+  if (message.includes("LOG:")) {
+    const parsedMessage = message
+      .slice("LOG:".length, /* remove the new line */ -1)
+      .trim();
+
+    // log the intercepted message
+    console.log(`Log USER_${user}:`, parsedMessage);
+    return true;
+  }
+  return false;
+}
+
+// make processes talk to each other by redirecting STDOUT to STDIN
 processA.stdout.on("data", (data: string) => {
-  // log messages from user A
-  if (data.toString().includes("LOG:")) {
-    console.log("USER_A:", data.toString().slice(4));
+  if (interceptLogs(data.toString(), "A")) {
+    return;
   }
   processB.stdin.write(data);
 });
 
-processA.stderr.on("data", (data) => {
-  console.error("USER_A:", data.toString());
-});
-
 processB.stdout.on("data", (data) => {
-  // log messages from user B
-  if (data.toString().includes("LOG:")) {
-    console.log("USER_B:", data.toString().slice(4));
+  if (interceptLogs(data.toString(), "B")) {
+    return;
   }
   processA.stdin.write(data);
+});
+
+// Log errors
+processA.stderr.on("data", (data) => {
+  console.error("USER_A:", data.toString());
 });
 
 processB.stderr.on("data", (data) => {
   console.error("USER_B:", data.toString());
 });
-
-// import { decrypt, encrypt, generateKeyPair } from "./crypto";
-
-// const raw = "A".split("");
-// const key = JSON.stringify(generateKeyPair());
-// const encrypted = encrypt("A", key);
-// const decrypted = decrypt(encrypted, key);
-
-// console.log({ key, raw, encrypted, decrypted });
