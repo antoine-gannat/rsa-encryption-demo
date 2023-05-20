@@ -14,11 +14,11 @@ To do so, we have two users, A and B:
 
 - Install `yarn` and `NodeJS`
 
-- Installing dependencies and build the project:
+- Install dependencies and build the project:
 
   `yarn && yarn build`
 
-- Run the demo by using this command:
+- Run the demo:
 
   `yarn start <message>`
 
@@ -42,9 +42,9 @@ I used the library `big-number` to handle the `power` and `modulo` operations, s
 ## Notes
 
 I've noticed that sometimes when using large primes, the decryption fails. I believe that might be due to the very large
-modulo operations that has to be done when using large primes, not sure if the `big-number` library can handle these.
+modulo operations that have to be done when using large primes, might be caused by the `big-number` library.
 
-If this is indeed the problem, a solution could be to create or find an inifite-numbers calculator.
+If this is indeed the problem, a solution could be to create or find an other inifite-numbers calculator.
 
 ## Useful links
 
