@@ -29,10 +29,14 @@ process.stdin.on("data", (data) => {
   if (type !== "ENC_MSG") {
     return;
   }
+  talk(
+    "LOG",
+    `Decrypting message: [${content}] using private key: ${privateKey}`
+  );
   // decrypt the message using the private key
   const decryptedMessage = decrypt(content, privateKey);
   // Log the decrypted message
-  talk("LOG", `Text decrypted to: ${decryptedMessage}`);
+  talk("LOG", `Message decrypted to: "${decryptedMessage}"`);
 
   // job done, exit the process
   process.exit(0);

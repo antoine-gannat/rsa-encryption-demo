@@ -15,10 +15,10 @@ process.stdin.on("data", (data) => {
   const { type, content } = parsedMessage;
 
   // wait for KEY message
-
   if (type !== "KEY") {
     return;
   }
+  talk("LOG", `Received public key ${content}`);
 
   const publicKeyOfOtherUser = content;
   const messageToSend = process.argv[2] || "Hello World!";
@@ -26,8 +26,8 @@ process.stdin.on("data", (data) => {
   // encrypt a message using the other user's public key
   const encryptedMessage = encrypt(messageToSend, publicKeyOfOtherUser);
   // send the encrypted message back
-  talk("ENC_MSG", encryptedMessage);
   talk("LOG", `Sending encypted message: [${encryptedMessage}]`);
+  talk("ENC_MSG", encryptedMessage);
 
   // job done, exit the process
   process.exit(0);

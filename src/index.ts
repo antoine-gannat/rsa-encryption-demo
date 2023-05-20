@@ -17,12 +17,10 @@ const processB = spawn("node", [path.join(__dirname, "userB")]);
 // intercept logs and print them to the console
 function interceptLogs(message: string, user: "A" | "B"): boolean {
   if (message.includes("LOG:")) {
-    const parsedMessage = message
-      .slice("LOG:".length, /* remove the new line */ -1)
-      .trim();
+    const parsedMessage = message.slice("LOG:".length).trim();
 
     // log the intercepted message
-    console.log(`Log USER_${user}:`, parsedMessage);
+    console.log(`USER_${user}:`, parsedMessage);
     return true;
   }
   return false;

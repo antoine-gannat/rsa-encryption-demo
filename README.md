@@ -6,23 +6,34 @@ To do so, we have two users, A and B:
 
 1. User B will generate an RSA key-pair (public+private)
 2. User B will send the public key to user A
-3. User A will that public key to encrypt a message
+3. User A will use that public key to encrypt a message
 4. User A will send that encrypted message to user B
 5. User B will use the private key to decrypt the encrypted message
 
 ## Usage
 
-- Start by installing dependencies and building the project:
+- Install `yarn` and `NodeJS`
+
+- Installing dependencies and build the project:
 
   `yarn && yarn build`
 
-- Then run the demo by using this command:
+- Run the demo by using this command:
 
   `yarn start <message>`
 
-  Such as:
+## Example
 
-  `yarn start 'Hello world'`
+```
+$ yarn start "Hello world"
+USER_B: Generating key pair using primes: { p: 31, q: 47 } Result: { n: 1457, e: 17, d: 893 }
+
+USER_A: Received public key {"e":17,"n":1457}
+USER_A: Sending encypted message: [410,1087,1015,1015,789,1334,316,789,86,1015,824]
+
+USER_B: Decrypting message: [410,1087,1015,1015,789,1334,316,789,86,1015,824] using private key: {"n":1457,"e":17,"d":893}
+USER_B: Message decrypted to: "Hello world"
+```
 
 ## Third party libraries
 
